@@ -3,7 +3,7 @@ Comando para hacer build image
 
 Comando para iniciar container
 
-`docker run --name=almuerzos -v /php/local.ini:/usr/local/etc/php/conf.d/local.ini -e SERVICE_NAME=app -e SERVICE_TAGS=dev --restart unless-stopped -p 80:80 -p 443:443 tonioros/almuerzos:latest`
+`docker run --name=almuerzos -v /php/local.ini:/usr/local/etc/php/conf.d/local.ini -v "$(PWD)/almuerzos:/var/www" -e SERVICE_NAME=app -e SERVICE_TAGS=dev --restart unless-stopped -p 80:80 -p 443:443 tonioros/almuerzos:latest`
 
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
