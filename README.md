@@ -1,9 +1,16 @@
-Comando para hacer build image
-`docker build -t tonioros/almuerzos:latest .`
+Comando para hacer build image para API Almuerzos
+`docker build -t tonioros/almuerzos:latest -f Dockerfile .`
 
-Comando para iniciar container
+Comando para hacer build image para Queue Worker
+`docker build -t tonioros/almuerzos-queue:latest -f DockerfileQueue .`
 
-`docker run --name=almuerzos -v /php/local.ini:/usr/local/etc/php/conf.d/local.ini -v "$(PWD)/almuerzos:/var/www" -e SERVICE_NAME=app -e SERVICE_TAGS=dev --restart unless-stopped -p 80:80 -p 443:443 tonioros/almuerzos:latest`
+Comando para iniciar container de API Almuerzos
+
+`docker run --name=almuerzos -v /php/local.ini:/usr/local/etc/php/conf.d/local.ini -v "$(PWD)/almuerzos:/var/www" -e SERVICE_NAME=app -e SERVICE_TAGS=dev --restart unless-stopped -p 8081:80 -p 442:443 tonioros/almuerzos:latest`
+
+Comando para iniciar container de Queue Worker
+
+`docker run --name=almuerzos-queue -v /php/local.ini:/usr/local/etc/php/conf.d/local.ini -v "$(PWD)/almuerzos:/var/www" --restart unless-stopped tonioros/almuerzos-queue:latest`
 
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>

@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -16,7 +15,7 @@ return new class extends Migration
             $table->string("status");
             $table->string("fcm_token");
             $table->dateTime("request_date");
-            $table->dateTime("delivery_date");
+            $table->dateTime("delivery_date")->nullable();
             $table->bigInteger("recipe_id");
             $table->timestamps();
         });

@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 class Order extends Model
 {
     use Notifiable;
+
     protected $table = 'orders';
     use HasFactory;
 
@@ -28,5 +29,14 @@ class Order extends Model
     public function routeNotificationForFcm()
     {
         return $this->fcm_token;
+    }
+
+    /**
+     * Get Recipe selected
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function recipe()
+    {
+        return $this->belongsTo(Recipe::class);
     }
 }

@@ -22,6 +22,7 @@ class OrderFactory extends Factory
         return [
             "status" => $this->faker->randomElement([OrderState::PENDING, OrderState::COOKING, OrderState::COMPLETED]),
             "request_date" => $this->faker->dateTime(),
+            "fcm_token" => "fake_fcm_token",
             "delivery_date" => $this->faker->dateTime(),
             "recipe_id" => Recipe::factory()->create()->id,
         ];

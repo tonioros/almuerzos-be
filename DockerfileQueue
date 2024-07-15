@@ -13,7 +13,6 @@ RUN apt-get update && apt-get install -y \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
     locales \
-    nginx \
     wget \
     zip \
     libonig-dev \
@@ -36,11 +35,7 @@ RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
 RUN docker-php-ext-configure gd
 RUN docker-php-ext-install gd pdo_pgsql pgsql
 
-
-# Install Nging and copy local configs
-RUN mkdir -p /run/nginx
-COPY ./nginx/conf.d/app.conf /etc/nginx/nginx.conf
-COPY ./nginx/startup.sh /etc/nginx/service_startup.sh
+COPY ./php/run-queque.sh /var/scripts/queque.sh
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -68,8 +63,7 @@ RUN php artisan key:generate
 RUN php artisan optimize
 RUN php artisan config:clear
 
-# Expose port 9000 and start php-fpm server
-EXPOSE 80
-EXPOSE 443
-EXPOSE 9000
-CMD sh /etc/nginx/service_startup.sh > /var/log/startup.log
+EXPOSE 8963
+# Start Queue worker
+CMD ["php","/var/www/artisan","queue:work","--timeout","450","-vvv"]
+
