@@ -10,7 +10,11 @@ class Recipe extends Model
     protected $table = 'recipe';
     use HasFactory;
 
-    protected $fillable = ['name', 'avg_preparation_time', 'url_image'];
+    protected $fillable = [
+        'name',
+        'avg_preparation_time',
+        'url_image'
+    ];
 
     /**
      * Return List of Ingredients for the Recipe

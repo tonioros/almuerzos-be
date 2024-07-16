@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\RecipeIngredientController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/order', [OrderController::class, 'index']);
+Route::get('/recipe', [RecipeController::class, 'index']);
+Route::get('/recipe-ingredient', [RecipeIngredientController::class, 'index']);
 Route::post('/order', [OrderController::class, 'startANewOrder']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

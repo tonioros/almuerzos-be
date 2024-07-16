@@ -10,9 +10,26 @@ class RecipeIngredientController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $recipe_id = $request->get("recipe_id");
+        $ingredient = $request->get("ingredient");
+        $orderBy = $request->get("orderBy");
+        $limit = $request->get("limit");
+        $recipeList = RecipeIngredient::query();
+        if ($recipe_id) {
+            $recipeList->where('recipe_id', $recipe_id);
+        }
+        if ($ingredient) {
+            $recipeList->where('ingredient', $ingredient);
+        }
+        if ($limit) {
+            $recipeList->limit($limit);
+        }
+        if ($orderBy) {
+            $recipeList->orderBy('id', $orderBy);
+        }
+        return $recipeList->get();
     }
 
     /**

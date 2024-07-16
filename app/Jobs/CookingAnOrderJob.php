@@ -11,6 +11,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
+use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Laravel\Firebase\Facades\Firebase;
 
 class CookingAnOrderJob implements ShouldQueue
 {
@@ -55,9 +57,36 @@ class CookingAnOrderJob implements ShouldQueue
             $this->order->status = OrderState::COMPLETED;
             $this->order->delivery_date = Carbon::now()->toDateTimeString();
             $this->order->save();
+            $this->sendPushNotification($this->order);
         } else {
             $this->order->status = OrderState::WITHOUT_INGREDIENTS;
             $this->order->save();
         }
+    }
+
+    /**
+     * Send Push Notification to Firebase Server
+     * that to send a notification on the user device
+     *
+     * @param Order $order
+     * @return void
+     * @throws \Kreait\Firebase\Exception\FirebaseException
+     * @throws \Kreait\Firebase\Exception\MessagingException
+     */
+    private function sendPushNotification(Order $order)
+    {
+        $messaging = Firebase::messaging();
+        $message = CloudMessage::fromArray([
+            'token' => $order->fcm_token,
+            'notification' => [
+                'title' => "Tu almuerzo esta listo",
+                'body' => "Tu " . $order->recipe->name . " esta listo, puedes pasar a traerlo",
+            ],
+            'data' => [
+                'order' => $order,
+            ]
+        ]);
+        $messaging->send($message);
+
     }
 }

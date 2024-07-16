@@ -9,17 +9,13 @@ WORKDIR /var/www
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
-    libpng-dev \
-    libjpeg62-turbo-dev \
     libfreetype6-dev \
     locales \
     wget \
     zip \
     libonig-dev \
     jpegoptim optipng pngquant gifsicle \
-    vim \
     unzip \
-    git \
     curl \
     libpq-dev \
     pkg-config \
@@ -30,7 +26,7 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install extensions
-RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
+RUN docker-php-ext-install mbstring zip exif pcntl
 RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
 RUN docker-php-ext-configure gd
 RUN docker-php-ext-install gd pdo_pgsql pgsql
@@ -63,7 +59,6 @@ RUN php artisan key:generate
 RUN php artisan optimize
 RUN php artisan config:clear
 
-EXPOSE 8963
 # Start Queue worker
-CMD ["php","/var/www/artisan","queue:work","--timeout","450","-vvv"]
+CMD ["php","/var/www/artisan","queue:work","--timeout","450","-vvv","--stop-when-empty"]
 
