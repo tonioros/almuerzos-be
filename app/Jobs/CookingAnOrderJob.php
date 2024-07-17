@@ -46,10 +46,11 @@ class CookingAnOrderJob implements ShouldQueue
         $ingredientsToUse = substr($ingredientsToUse, 1, strlen($ingredientsToUse) - 1);
         $haveIngredients = Http::get($warehouseURL . '/ingredients/' . $ingredientsToUse)->ok();
         if ($haveIngredients) {
-            $ingredientsList->transform(function ($item) {
-                return [$item->name => $item->total_to_use];
+            $ingredientsToUseObj = [];
+            $ingredientsList->each(function ($item) use (&$ingredientsToUseObj) {
+                $ingredientsToUseObj[$item->ingredient] = $item->total_to_use;
             });
-            Http::post($warehouseURL . '/ingredients-to-use', $ingredientsList)->ok();
+            Http::post($warehouseURL . '/ingredients-to-use', $ingredientsToUseObj)->ok();
             $this->order->status = OrderState::COOKING;
             $this->order->save();
             // for this emulation, I'm using aprox preparation time to add a realistic to states changes
@@ -59,6 +60,7 @@ class CookingAnOrderJob implements ShouldQueue
             $this->order->save();
             $this->sendPushNotification($this->order);
         } else {
+            error_log("Failed call to: " . $warehouseURL . '/ingredients/' . $ingredientsToUse);
             $this->order->status = OrderState::WITHOUT_INGREDIENTS;
             $this->order->save();
         }
