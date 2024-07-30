@@ -1,6 +1,6 @@
 # Almuerzos API
 
-Proyecto hecho con Laravel v10 como prueba tecnica para Alegra, este API servira **end-points para Ordenes, Recetas, y
+Proyecto hecho con Laravel v10 como ejercicio para implementacion de micro servicios en GCP. Este API servira **end-points para Ordenes, Recetas, y
 Ingredientes para las recetas** ademas de generar un contendor que servira como **Queue Worker para la cocina**
 
 Para probar los servicios de este API puedes descargar
